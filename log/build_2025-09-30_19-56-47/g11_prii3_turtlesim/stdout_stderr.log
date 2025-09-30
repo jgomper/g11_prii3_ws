@@ -1,0 +1,22 @@
+running develop
+running egg_info
+creating g11_prii3_turtlesim.egg-info
+writing g11_prii3_turtlesim.egg-info/PKG-INFO
+writing dependency_links to g11_prii3_turtlesim.egg-info/dependency_links.txt
+writing entry points to g11_prii3_turtlesim.egg-info/entry_points.txt
+writing requirements to g11_prii3_turtlesim.egg-info/requires.txt
+writing top-level names to g11_prii3_turtlesim.egg-info/top_level.txt
+writing manifest file 'g11_prii3_turtlesim.egg-info/SOURCES.txt'
+reading manifest file 'g11_prii3_turtlesim.egg-info/SOURCES.txt'
+writing manifest file 'g11_prii3_turtlesim.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/install/g11_prii3_turtlesim/lib/python3.8/site-packages/site.py
+Creating /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/install/g11_prii3_turtlesim/lib/python3.8/site-packages/g11-prii3-turtlesim.egg-link (link to .)
+
+Installed /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/build/g11_prii3_turtlesim
+running symlink_data
+creating /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/install/g11_prii3_turtlesim/share/ament_index
+creating /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/install/g11_prii3_turtlesim/share/ament_index/resource_index
+creating /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/install/g11_prii3_turtlesim/share/ament_index/resource_index/packages
+symbolically linking /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/build/g11_prii3_turtlesim/resource/g11_prii3_turtlesim -> /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/install/g11_prii3_turtlesim/share/ament_index/resource_index/packages
+symbolically linking /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/build/g11_prii3_turtlesim/package.xml -> /home/jgomper/Escritorio/UPV/proyecto_3/g11_prii3_ws/install/g11_prii3_turtlesim/share/g11_prii3_turtlesim
