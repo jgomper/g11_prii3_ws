@@ -1,4 +1,4 @@
-# Proyecto: Control de Turtlesim - “11” <!-- Título principal -->
+# Sprint 1: Control de Turtlesim - “11” <!-- Título principal -->
 
 **Este proyecto pertenece al Grupo 11 de la asignatura Proyectos PRII3.**  
 Desarrollado por: **Juan Gómez-Rivas Pérez**, **David Cantó Fuentes**, y **Alvaro Fernández Serrano**  
