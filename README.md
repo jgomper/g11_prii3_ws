@@ -64,7 +64,7 @@ g11_prii3_ws/
     ros2 launch g11_prii3_turtlesim turtlesim_launch.py
     ```
 
-La tortuga dibujará el número “11” en pantalla, si queremos pausar, reunudar y reinicar el dibujo, debremos de ejecutar diferentes codigos, estos son:
+La tortuga dibujará el número “11” en pantalla, si queremos pausar, reunudar y/o reinicar el dibujo, debremos de ejecutar diferentes codigos, estos son:
 - **Pausar la ejecución**
 	```bash
 	ros2 service call /draw_control std_srvs/srv/SetBool "{data: false}"
