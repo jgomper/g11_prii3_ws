@@ -1,21 +1,23 @@
-Proyecto: Control de Turtlesim - “11”
+# Sprint 1: Control de Turtlesim - “11” <!-- Título principal -->
 
-Este proyecto pertenece al Grupo 11 de la asignatura Robótica Inteligente (PRII3).
-Desarrollado por: jgomper
-Profesor evaluador: pamuobe
+**Este proyecto pertenece al Grupo 11 de la asignatura Proyectos PRII3.**  
+Desarrollado por: **Juan Gómez-Rivas Pérez**, **David Cantó Fuentes**, y **Alvaro Fernández Serrano**  
+Profesor evaluador: **pamuobe**
 
+---
 
-Descripción del proyecto
+## <u>Descripción del proyecto</u>
 
-El paquete g11_prii3_turtlesim implementa un nodo de control para dibujar el número “11”
-utilizando el simulador turtlesim de ROS 2.
+El paquete `g11_prii3_turtlesim` implementa un nodo de control para dibujar el número “11” utilizando el simulador turtlesim de ROS 2.
 
-El primer "1" y el segundo "1" se dibujan de forma separada mediante teletransporte
-y control de servicios (/turtle1/teleport_absolute, /turtle1/set_pen).
+El primer "1" y el segundo "1" se dibujan de forma separada mediante teletransporte  
+y control de servicios (`/turtle1/teleport_absolute`, `/turtle1/set_pen`).
 
+---
 
-Estructura del workspace
+## <u>Estructura del workspace</u>
 
+```
 g11_prii3_ws/
 │
 ├── src/
@@ -33,32 +35,54 @@ g11_prii3_ws/
 ├── install/
 ├── build/
 └── log/
+```
 
+---
 
-Requisitos
+## <u>Requisitos</u>
 
-Ubuntu 20.04 o superior
-ROS 2 Foxy (o superior compatible)
-Python 3.8+
-turtlesim instalado:
-	sudo apt install ros-foxy-turtlesim
+- **Ubuntu 20.04**
+- **ROS 2 Foxy** (o superior compatible)
+- **Python 3.8+**
+- **turtlesim instalado:**
+  ```bash
+  sudo apt install ros-foxy-turtlesim
+  ```
 
+---
 
-Ejecución
-	1. Cargar el workspace
-		cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws
-		colcon build
-		source install/setup.bash
-	2. Ejecutar el lanzamiento
-		ros2 launch g11_prii3_turtlesim turtlesim_launch.py
+## <u>Ejecución</u>
 
-La tortuga dibujará el número “11” en pantalla.
+1. **Cargar el workspace**
+    ```bash
+    cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws
+    colcon build
+    source install/setup.bash
+    ```
+2. **Ejecutar el lanzamiento**
+    ```bash
+    ros2 launch g11_prii3_turtlesim turtlesim_launch.py
+    ```
 
+La tortuga dibujará el número “11” en pantalla, si queremos pausar, reunudar y reinicar el dibujo, debremos de ejecutar diferentes codigos, estos son:
+- **Pausar la ejecución**
+	```bash
+	ros2 service call /draw_control std_srvs/srv/SetBool "{data: false}"
+	```
+- **Reanudar la ejecución**
+	```bash
+	ros2 service call /draw_control std_srvs/srv/SetBool "{data: true}"
+	```
+- **Reiniciar la ejecución**
+	```bash
+	ros2 service call /reset_drawing std_srvs/srv/Empty "{}"
+	```
+---
 
-Control de versión
+## <u>Control de versión</u>
 
 Repositorio GitHub:
-	https://github.com/jgomper/g11_prii3_ws
+[https://github.com/jgomper/g11_prii3_ws](https://github.com/jgomper/g11_prii3_ws)
 
 
 

@@ -1,88 +1,142 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from turtlesim.srv import TeleportAbsolute, SetPen
+from std_srvs.srv import SetBool, Empty
 import time
 
-class Turtle11(Node):
+class TurtleDraw(Node):
     def __init__(self):
-        super().__init__('turtle_11')
-        self.get_logger().info("Iniciando nodo para dibujar el número 11...")
+        super().__init__('controller')
+        self.get_logger().info('Nodo controller inicializado (turtle_draw.py)')
 
-        # Publicador para mover la tortuga
-        self.cmd_pub = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
+        # Variables internas
+        self.drawing_paused = False
+        self.current_step = 0
 
-        # Clientes de servicio
-        self.teleport_cli = self.create_client(TeleportAbsolute, '/turtle1/teleport_absolute')
-        self.setpen_cli = self.create_client(SetPen, '/turtle1/set_pen')
+        # Clientes de servicios
+        self.cli_teleport = self.create_client(TeleportAbsolute, '/turtle1/teleport_absolute')
+        self.cli_pen = self.create_client(SetPen, '/turtle1/set_pen')
+        self.cli_clear = self.create_client(Empty, '/clear')
 
-        # Esperar a que los servicios estén disponibles
-        self.get_logger().info("Esperando servicios de turtlesim...")
-        self.teleport_cli.wait_for_service()
-        self.setpen_cli.wait_for_service()
+        # Publicador de velocidad
+        self.publisher = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
 
-        # Dibujar el número 11
-        self.draw_11()
+        # Servicios personalizados
+        self.srv_control = self.create_service(SetBool, 'draw_control', self.control_callback)
+        self.srv_reset = self.create_service(Empty, 'reset_drawing', self.reset_callback)
 
-    def teleport(self, x, y, theta=1.57):
-        """Teletransporta tortuga a (x, y) mirando hacia arriba."""
-        req = TeleportAbsolute.Request()
-        req.x = float(x)
-        req.y = float(y)
-        req.theta = float(theta)
-        future = self.teleport_cli.call_async(req)
-        rclpy.spin_until_future_complete(self, future)
-        time.sleep(0.5)
+        # Temporizador (0.5 seg entre pasos)
+        self.timer = self.create_timer(0.5, self.draw_step)
 
-    def set_pen(self, r, g, b, width=5, off=False):
-        """Cambia el color o activa/desactiva el lápiz."""
-        req = SetPen.Request()
-        req.r = r
-        req.g = g
-        req.b = b
-        req.width = width
-        req.off = 1 if off else 0
-        future = self.setpen_cli.call_async(req)
-        rclpy.spin_until_future_complete(self, future)
-        time.sleep(0.3)
+        self.get_logger().info('Servicios disponibles:')
+        self.get_logger().info('- /draw_control (pausar / reanudar)')
+        self.get_logger().info('- /reset_drawing (reiniciar dibujo con limpieza)')
 
-    def move_up(self, distance=5.0, speed=1.0):
-        """Mueve la tortuga hacia arriba dibujando."""
-        msg = Twist()
-        msg.linear.x = speed
-        steps = int(distance / (speed * 0.1))
-        for _ in range(steps):
-            self.cmd_pub.publish(msg)
-            time.sleep(0.1)
-        msg.linear.x = 0.0
-        self.cmd_pub.publish(msg)
-        time.sleep(0.5)
+    # ------------------ SERVICIOS ------------------ #
 
-    def draw_11(self):
-        self.get_logger().info("Iniciando dibujo del número 11...")
+    def control_callback(self, request, response):
+        """Pausa o reanuda el dibujo."""
+        if request.data:
+            self.get_logger().info('Reanudando dibujo...')
+            self.drawing_paused = False
+            response.message = "Dibujo reanudado"
+        else:
+            self.get_logger().info('Pausando dibujo...')
+            self.drawing_paused = True
+            response.message = "Dibujo pausado"
+        response.success = True
+        return response
 
-        # --- Primer palo ---
-        self.get_logger().info("Primer palo...")
-        self.set_pen(255, 255, 255, 5, off=True)
-        self.teleport(2.5, 2.0)  # Más a la izquierda
-        self.set_pen(255, 255, 255, 5, off=False)
-        self.move_up(6.0)  # Más largo
+    def reset_callback(self, request, response):
+        """Reinicia el dibujo desde cero y limpia la pantalla."""
+        self.get_logger().info('Reiniciando dibujo y limpiando pantalla...')
+        self.current_step = 0
+        self.drawing_paused = False
 
-        # --- Segundo palo ---
-        self.get_logger().info("Segundo palo...")
-        self.set_pen(255, 255, 255, 5, off=True)
-        self.teleport(6.5, 2.0)  # Más separado del primero
-        self.set_pen(255, 255, 255, 5, off=False)
-        self.move_up(6.0)
+        self.clear_screen()
+        self.set_pen(255, 255, 255, 5, 1)
+        self.teleport(3.0, 2.0, 1.57)
+        self.set_pen(255, 255, 255, 7, 0)
+        return response
 
-        self.get_logger().info("Número 11 dibujado correctamente (líneas blancas y gruesas).")
+    # ------------------ FUNCIONES AUXILIARES ------------------ #
+
+    def clear_screen(self):
+        """Limpia la pantalla."""
+        if self.cli_clear.wait_for_service(timeout_sec=2.0):
+            self.cli_clear.call_async(Empty.Request())
+        else:
+            self.get_logger().warn("Servicio /clear no disponible")
+
+    def set_pen(self, r, g, b, width, off):
+        """Cambia color/grosor del lápiz o lo apaga."""
+        if self.cli_pen.wait_for_service(timeout_sec=2.0):
+            req = SetPen.Request()
+            req.r, req.g, req.b = r, g, b
+            req.width = width
+            req.off = off
+            self.cli_pen.call_async(req)
+        else:
+            self.get_logger().warn("Servicio /set_pen no disponible")
+
+    def teleport(self, x, y, theta):
+        """Teletransporta sin dejar trazo."""
+        if self.cli_teleport.wait_for_service(timeout_sec=2.0):
+            req = TeleportAbsolute.Request()
+            req.x, req.y, req.theta = x, y, theta
+            self.cli_teleport.call_async(req)
+        else:
+            self.get_logger().warn("Servicio /teleport_absolute no disponible")
+
+    def move_up(self, duration):
+        """Sube en línea recta durante cierto tiempo."""
+        twist = Twist()
+        twist.linear.x = 6.0  # velocidad aumentada ligeramente
+        self.publisher.publish(twist)
+        time.sleep(3.0)
+        twist.linear.x = 0.0
+        self.publisher.publish(twist)
+
+    # ------------------ DIBUJO PRINCIPAL ------------------ #
+
+    def draw_step(self):
+        if self.drawing_paused:
+            return
+
+        if self.current_step == 0:
+            self.get_logger().info("Teletransportando al inicio del primer 1...")
+            self.set_pen(255, 255, 255, 5, 1)
+            self.teleport(3.0, 2.0, 1.57)
+            self.set_pen(255, 255, 255, 7, 0)
+
+        elif self.current_step == 1:
+            self.get_logger().info("Dibujando primer palo más largo...")
+            self.move_up(15.0)  # doblamos la altura
+
+        elif self.current_step == 2:
+            self.get_logger().info("Teletransportando rápidamente al segundo 1...")
+            self.set_pen(255, 255, 255, 5, 1)
+            self.teleport(6.0, 2.0, 1.57)  # menos separado (antes 8.0)
+            time.sleep(0.5)  # espera más corta
+            self.set_pen(255, 255, 255, 7, 0)
+
+        elif self.current_step == 3:
+            self.get_logger().info("Dibujando segundo palo más largo...")
+            self.move_up(15.0)  # mismo tamaño
+
+        elif self.current_step >= 4:
+            self.get_logger().info("Dibujo del número 11 completado.")
+            self.destroy_timer(self.timer)
+
+        self.current_step += 1
+
+
+# ------------------ MAIN ------------------ #
 
 def main(args=None):
     rclpy.init(args=args)
-    node = Turtle11()
+    node = TurtleDraw()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
