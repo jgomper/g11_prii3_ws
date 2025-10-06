@@ -92,7 +92,7 @@ class TurtleDraw(Node):
     def move_up(self, duration):
         """Sube en línea recta durante cierto tiempo."""
         twist = Twist()
-        twist.linear.x = 6.0  # velocidad aumentada ligeramente
+        twist.linear.x = 6.0
         self.publisher.publish(twist)
         time.sleep(3.0)
         twist.linear.x = 0.0
@@ -111,19 +111,19 @@ class TurtleDraw(Node):
             self.set_pen(255, 255, 255, 7, 0)
 
         elif self.current_step == 1:
-            self.get_logger().info("Dibujando primer palo más largo...")
-            self.move_up(15.0)  # doblamos la altura
-
+            self.get_logger().info("Dibujando el primer 1...")
+            self.move_up(15.0) 
+            
         elif self.current_step == 2:
             self.get_logger().info("Teletransportando rápidamente al segundo 1...")
             self.set_pen(255, 255, 255, 5, 1)
-            self.teleport(6.0, 2.0, 1.57)  # menos separado (antes 8.0)
-            time.sleep(0.5)  # espera más corta
+            self.teleport(6.0, 2.0, 1.57)  
+            time.sleep(0.5)  
             self.set_pen(255, 255, 255, 7, 0)
 
         elif self.current_step == 3:
-            self.get_logger().info("Dibujando segundo palo más largo...")
-            self.move_up(15.0)  # mismo tamaño
+            self.get_logger().info("Dibujando el segundo 1...")
+            self.move_up(15.0) 
 
         elif self.current_step >= 4:
             self.get_logger().info("Dibujo del número 11 completado.")
