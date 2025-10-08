@@ -51,13 +51,29 @@ class TurtleDraw(Node):
     def reset_callback(self, request, response):
         """Reinicia el dibujo desde cero y limpia la pantalla."""
         self.get_logger().info('Reiniciando dibujo y limpiando pantalla...')
+        
+        # Detener el temporizador actual si existe
+        if hasattr(self, 'timer'):
+            self.destroy_timer(self.timer)
+        
+        # Reiniciar variables de estado
         self.current_step = 0
         self.drawing_paused = False
 
+        # Limpiar pantalla y resetear posición
         self.clear_screen()
-        self.set_pen(255, 255, 255, 5, 1)
+        time.sleep(0.5)  # Pequeña pausa para asegurar que se complete la limpieza
+        
+        # Resetear posición inicial (igual que al inicio)
+        self.set_pen(255, 255, 255, 5, 1)  # Levantar el lápiz
         self.teleport(3.0, 2.0, 1.57)
-        self.set_pen(255, 255, 255, 7, 0)
+        time.sleep(0.5)  # Pausa para asegurar el teletransporte
+        self.set_pen(255, 255, 255, 7, 0)  # Bajar el lápiz
+        
+        # Reiniciar el temporizador
+        self.timer = self.create_timer(0.5, self.draw_step)
+        
+        self.get_logger().info('Dibujo reiniciado correctamente')
         return response
 
     # ------------------ FUNCIONES AUXILIARES ------------------ #
@@ -92,7 +108,7 @@ class TurtleDraw(Node):
     def move_up(self, duration):
         """Sube en línea recta durante cierto tiempo."""
         twist = Twist()
-        twist.linear.x = 6.0  # velocidad aumentada ligeramente
+        twist.linear.x = 6.0
         self.publisher.publish(twist)
         time.sleep(3.0)
         twist.linear.x = 0.0
@@ -111,19 +127,19 @@ class TurtleDraw(Node):
             self.set_pen(255, 255, 255, 7, 0)
 
         elif self.current_step == 1:
-            self.get_logger().info("Dibujando primer palo más largo...")
-            self.move_up(15.0)  # doblamos la altura
-
+            self.get_logger().info("Dibujando el primer 1...")
+            self.move_up(15.0) 
+            
         elif self.current_step == 2:
             self.get_logger().info("Teletransportando rápidamente al segundo 1...")
             self.set_pen(255, 255, 255, 5, 1)
-            self.teleport(6.0, 2.0, 1.57)  # menos separado (antes 8.0)
-            time.sleep(0.5)  # espera más corta
+            self.teleport(6.0, 2.0, 1.57)  
+            time.sleep(0.5)  
             self.set_pen(255, 255, 255, 7, 0)
 
         elif self.current_step == 3:
-            self.get_logger().info("Dibujando segundo palo más largo...")
-            self.move_up(15.0)  # mismo tamaño
+            self.get_logger().info("Dibujando el segundo 1...")
+            self.move_up(15.0) 
 
         elif self.current_step >= 4:
             self.get_logger().info("Dibujo del número 11 completado.")
@@ -143,4 +159,5 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+    
 
