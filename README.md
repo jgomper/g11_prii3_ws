@@ -65,7 +65,11 @@ g11_prii3_ws/
     ```
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 La tortuga dibujará el número “11” en pantalla, si queremos pausar, reunudar y reinicar el dibujo, debremos de ejecutar diferentes codigos, estos son:
+=======
+La tortuga dibujará el número “11” en pantalla, si queremos pausar, reunudar y/o reinicar el dibujo, debremos de ejecutar diferentes codigos, estos son:
+>>>>>>> 6b900edaa68d469bb3791906f6282063690c4059
 - **Pausar la ejecución**
 	```bash
 	ros2 service call /draw_control std_srvs/srv/SetBool "{data: false}"
