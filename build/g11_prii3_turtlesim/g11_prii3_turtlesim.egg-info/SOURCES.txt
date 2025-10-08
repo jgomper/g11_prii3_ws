@@ -9,7 +9,6 @@ setup.py
 ../../build/g11_prii3_turtlesim/g11_prii3_turtlesim.egg-info/top_level.txt
 ../../build/g11_prii3_turtlesim/g11_prii3_turtlesim.egg-info/zip-safe
 g11_prii3_turtlesim/__init__.py
-g11_prii3_turtlesim/test_turtle.py
 g11_prii3_turtlesim/turtle_draw.py
 launch/turtlesim_launch.py
 resource/g11_prii3_turtlesim

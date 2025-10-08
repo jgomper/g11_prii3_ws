@@ -64,6 +64,7 @@ g11_prii3_ws/
     ros2 launch g11_prii3_turtlesim turtlesim_launch.py
     ```
 
+<<<<<<< HEAD
 La tortuga dibujará el número “11” en pantalla, si queremos pausar, reunudar y reinicar el dibujo, debremos de ejecutar diferentes codigos, estos son:
 - **Pausar la ejecución**
 	```bash
@@ -83,8 +84,16 @@ La tortuga dibujará el número “11” en pantalla, si queremos pausar, reunud
 
 Repositorio GitHub:
 [https://github.com/jgomper/g11_prii3_ws](https://github.com/jgomper/g11_prii3_ws)
+=======
+La tortuga dibujará el número “11” en pantalla.
 
+---
+>>>>>>> 9dd65315097723705d9e3d00087b9854db4a1e9b
 
+## <u>Control de versión</u>
+
+Repositorio GitHub:  
+[https://github.com/jgomper/g11_prii3_ws](https://github.com/jgomper/g11_prii3_ws)
 
 
 
