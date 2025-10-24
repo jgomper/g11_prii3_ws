@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
-<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypelayout="1.0"?>
 <package format="3">
   <name>g11_prii3</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="jgomper@upv.edu.es">jgomper</maintainer>
-  <license>TODO: License declaration</license>
+  <description>G11 PRII3 package for TurtleBot3 simulation</description>
+  <maintainer email="jgomper@upv.es">jgomper</maintainer>
+  <license>Apache-2.0</license>
 
   <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>turtlesim</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
