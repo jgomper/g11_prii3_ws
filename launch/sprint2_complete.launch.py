@@ -19,12 +19,11 @@ def generate_launch_description():
         TimerAction(
             period=5.0,
             actions=[
-                # Controlador de trayectoria completo
                 Node(
                     package='g11_prii3',
-                    executable='trajectory_controller',
+                    executable='draw_number_simulation',
                     output='screen',
-                    name='trajectory_controller'
+                    name='draw_number_simulation'
                 ),
             ]
         )

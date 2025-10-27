@@ -17,9 +17,10 @@ class CollisionAvoidanceSimulation(Node):
             10
         )
         
-        self.safe_distance = 1.0
+        # DISTANCIA MÁS CERCANA para detectar antes
+        self.safe_distance = 1.2
         self.obstacle_detected = False
-        self.base_speed = 0.2
+        self.base_speed = 0.15
         
         self.control_timer = self.create_timer(0.1, self.control_loop)
         
@@ -36,11 +37,20 @@ class CollisionAvoidanceSimulation(Node):
         
         min_dist = float('inf')
         for i in range(start, end):
-            if i < len(msg.ranges) and 0.1 < msg.ranges[i] < 5.0:
+            if i < len(msg.ranges) and 0.1 < msg.ranges[i] < 3.0:  # Rango más corto
                 if msg.ranges[i] < min_dist:
                     min_dist = msg.ranges[i]
         
-        if min_dist < self.safe_distance:
+        # DEBUG: Mostrar distancia periódicamente
+        current_time = time.time()
+        if hasattr(self, 'last_log_time'):
+            if current_time - self.last_log_time > 1.0:
+                self.get_logger().info(f'Distancia frontal: {min_dist:.2f}m')
+                self.last_log_time = current_time
+        else:
+            self.last_log_time = current_time
+        
+        if min_dist < self.safe_distance and min_dist != float('inf'):
             if not self.obstacle_detected:
                 self.obstacle_detected = True
                 self.get_logger().warn(f'OBSTACULO DETECTADO AL FRENTE a {min_dist:.2f}m - PARANDO')

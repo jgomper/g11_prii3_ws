@@ -1,3 +1,0 @@
-[console_scripts]
-turtle_draw = g11_prii3_turtlesim.turtle_draw:main
-
