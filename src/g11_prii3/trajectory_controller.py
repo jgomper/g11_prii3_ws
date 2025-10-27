@@ -28,13 +28,14 @@ class TrajectoryController(Node):
         self.delete_client = self.create_client(DeleteEntity, '/delete_entity')
         
         # Variables de control
-        self.phase = 0  # 0: Avanzar hasta objeto, 1: Esperar 5s, 2: Avanzar hasta x=5, 3: Girar -90°, 4: Avanzar hasta y=-1.5, 5: Girar -90°, 6: Avanzar hasta x=0
+        self.phase = -1  # -1: Inicial, 0: Avanzar hasta objeto, 1: Esperar 5s, 2: Avanzar hasta x=5, etc.
         self.obstacle_detected = False
         self.obstacle_stop_time = None
         self.obstacle_spawned = False
         self.current_x = 0.0
         self.current_y = 0.0
         self.last_time = time.time()
+        self.sequence_started = False
         
         # Parámetros
         self.linear_speed = 0.15
@@ -51,13 +52,15 @@ class TrajectoryController(Node):
             
         self.get_logger().info('Trajectory Controller iniciado - Grupo 11')
         
-        # Iniciar secuencia después de 3 segundos
+        # Iniciar secuencia después de 3 segundos - SOLO UNA VEZ
         self.create_timer(3.0, self.start_sequence)
         
     def start_sequence(self):
-        """Inicia la secuencia completa"""
-        self.get_logger().info('INICIANDO SECUENCIA COMPLETA')
-        self.spawn_obstacle()
+        """Inicia la secuencia completa - SOLO UNA VEZ"""
+        if not self.sequence_started:
+            self.sequence_started = True
+            self.get_logger().info('INICIANDO SECUENCIA COMPLETA')
+            self.spawn_obstacle()
         
     def spawn_obstacle(self):
         """Coloca el obstáculo en la posición ORIGINAL"""
@@ -115,8 +118,8 @@ class TrajectoryController(Node):
             self.obstacle_spawned = True
             self.get_logger().info('Obstaculo colocado en (2.0, -0.5)')
             self.phase = 0  # Comenzar a avanzar
-        except:
-            self.get_logger().error('Error al colocar obstaculo')
+        except Exception as e:
+            self.get_logger().error(f'Error al colocar obstaculo: {e}')
             
     def delete_obstacle(self):
         """Elimina el obstáculo"""
@@ -139,39 +142,56 @@ class TrajectoryController(Node):
                 self.get_logger().info('Obstaculo eliminado')
             else:
                 self.get_logger().error('Error al eliminar obstaculo')
-        except:
-            self.get_logger().error('Error en callback de eliminacion')
+        except Exception as e:
+            self.get_logger().error(f'Error en callback de eliminacion: {e}')
             
     def lidar_callback(self, msg):
-        """Detección de obstáculos - REVISIÓN COMPLETA 360°"""
+        """Detección de obstáculos - MEJORADA Y MÁS ROBUSTA"""
         if self.phase != 0:  # Solo en fase 0
             return
             
-        # Revisar TODOS los ángulos del LIDAR
+        # Revisar sector frontal (120 grados centrados) - MÁS AMPLIO
+        num_readings = len(msg.ranges)
+        center_index = num_readings // 2
+        sector_angle = 120  # grados - MÁS AMPLIO
+        sector_size = int(sector_angle * num_readings / 360)
+        start_index = max(0, center_index - sector_size // 2)
+        end_index = min(num_readings, center_index + sector_size // 2)
+        
         min_distance = float('inf')
-        for i in range(len(msg.ranges)):
+        valid_readings = 0
+        
+        for i in range(start_index, end_index):
             distance = msg.ranges[i]
-            # Cualquier lectura válida
-            if 0.1 < distance < 10.0:
+            # Solo considerar lecturas válidas dentro de rango razonable
+            if 0.3 < distance < 2.5:  # Rango ajustado
+                valid_readings += 1
                 if distance < min_distance:
                     min_distance = distance
         
-        # DEBUG: Mostrar distancia mínima de TODO el LIDAR
-        current_time = time.time()
-        if hasattr(self, 'last_debug_time'):
-            if current_time - self.last_debug_time > 1.0:
-                self.get_logger().info(f'Distancia MINIMA (360°): {min_distance:.2f}m')
+        # Si tenemos suficientes lecturas válidas, procesar
+        if valid_readings > 5 and min_distance != float('inf'):
+            # DEBUG: Mostrar distancia mínima del sector frontal
+            current_time = time.time()
+            if hasattr(self, 'last_debug_time'):
+                if current_time - self.last_debug_time > 0.5:  # Más frecuente
+                    self.get_logger().info(f'Distancia FRONTAL: {min_distance:.2f}m (lecturas válidas: {valid_readings})')
+                    self.last_debug_time = current_time
+            else:
                 self.last_debug_time = current_time
+            
+            # Detectar obstáculo a 1.0 metros - MÁS SENSIBLE
+            if min_distance < 1.0:
+                if not self.obstacle_detected:
+                    self.obstacle_detected = True
+                    self.obstacle_stop_time = time.time()
+                    self.get_logger().warn(f'OBSTACULO DETECTADO a {min_distance:.2f}m - PARANDO INMEDIATAMENTE')
+                    self.phase = 1  # Pasar a fase de espera
         else:
-            self.last_debug_time = current_time
-        
-        # Detectar obstáculo a 1.5 metros (para el objeto en 2.0, -0.5)
-        if min_distance < 1.5:
-            if not self.obstacle_detected:
-                self.obstacle_detected = True
-                self.obstacle_stop_time = time.time()
-                self.get_logger().warn(f'OBSTACULO DETECTADO a {min_distance:.2f}m - PARANDO')
-                self.phase = 1  # Pasar a fase de espera
+            # No hay suficientes lecturas válidas
+            if self.obstacle_detected:
+                self.obstacle_detected = False
+                self.get_logger().info('No hay obstaculos detectados - continuando')
             
     def update_pose_estimation(self, linear_vel, angular_vel):
         """Estimación simple de posición"""
@@ -186,14 +206,19 @@ class TrajectoryController(Node):
         """Bucle principal de control"""
         twist = Twist()
         
-        if self.phase == 0:
+        if self.phase == -1:
+            # FASE -1: Esperando inicio
+            twist.linear.x = 0.0
+            twist.angular.z = 0.0
+            
+        elif self.phase == 0:
             # FASE 0: Avanzar hasta detectar objeto
             twist.linear.x = self.linear_speed
             twist.angular.z = 0.0
             self.get_logger().info('Avanzando hasta objeto... Posicion X: %.1f' % self.current_x, throttle_duration_sec=2)
             
         elif self.phase == 1:
-            # FASE 1: Esperar 5 segundos
+            # FASE 1: Esperar 5 segundos - DETENER COMPLETAMENTE
             twist.linear.x = 0.0
             twist.angular.z = 0.0
             
