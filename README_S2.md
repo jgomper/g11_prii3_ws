@@ -1,173 +1,135 @@
-# Sprint 2: Simulación de TurtleBot3 <!-- Título principal -->
-# README_S2.md - TurtleBot3 Simulation - Simulacion por Gazebo - Tarea
+# Sprint 2: Simulación de TurtleBot3 y JetBot <!-- Título principal -->
 
-## <u>Descripción</u>
-Este proyecto contiene los paquetes ROS2 para la simulación y control del TurtleBot3 en diferentes entornos de Gazebo.
+**Este proyecto pertenece al Grupo 11 de la asignatura Proyectos PRII3.**  
+Desarrollado por: **Juan Gómez-Rivas Pérez**, **David Cantó Fuentes**, y **Alvaro Fernández Serrano**  
+Profesor evaluador: **pamuobe**
 
+---
+
+## <u>Descripción del proyecto</u>
+
+El paquete `g11_prii3` implementa nodos de control para dibujar el número "11" y realizar evitación de obstáculos utilizando TurtleBot3 en Gazebo y JetBot.
+
+### Características principales:
+- **Dibujo autónomo** del número "11"
+- **Evitación de colisiones** con detección por LIDAR
+- **Evitación de obstáculos** con esquiva dinámica
+- **Spawneo dinámico** de obstáculos en Gazebo
+- **Control no bloqueante** para movimientos fluidos
+
+---
 
 ## <u>Estructura del workspace</u>
-
-```
+```bash
 g11_prii3_ws/
-├── src/g11_prii3/
-│ ├── g11_prii3_move_jetbot.py # Control para JetBot
-│ ├── g11_prii3_move_turtlebot.py # Movimiento automático TurtleBot3
-│ ├── turtlebot3_teleop_keyboard.py # Teleoperación con teclado
-│ ├── test_turtlebot3.py # Script de pruebas
-│ ├── prii3_turtlesim_node.py # Nodo para turtlesim
-│ ├── drawer_number_gazebo.py # Dibujo de números en Gazebo
-│ └── init.py
+├── src/
+│ ├── g11_prii3/
+│ │ ├── prii3_turtlesim_node.py # Nodo para turtlesim (Sprint 1)
+│ │ ├── laser_filter.py # Filtro LIDAR
+│ │ ├── sprint2_demo.py # Demo Sprint 2
+│ │ └── draw_number_jetbot.py # Dibujo para JetBot
+│ ├── g11_prii3_move_turtlebot/
+│ │ ├── draw_number_simulation.py # Dibujo básico del "11"
+│ │ ├── draw_collision_avoidance.py # Dibujo con detección de colisiones
+│ │ ├── draw_obstacle_avoidance.py # Dibujo con esquiva de obstáculos
+│ │ ├── obstacle_spawner.py # Spawneo de obstáculos
+│ │ ├── collision_avoidance_simulation.py # Simulación de colisiones
+│ │ ├── obstacle_avoidance_simulation.py # Simulación de obstáculos
+│ │ ├── trajectory_controller.py # Controlador de trayectorias
+│ │ ├── test_turtlebot3.py # Script de pruebas
+│ │ ├── turtlebot3_teleop_keyboard.py # Teleoperación con teclado
+│ │ └── g11_prii3_move_turtlebot.py # Movimiento automático
+│ └── g11_prii3_move_jetbot/
+│ └── g11_prii3_move_jetbot.py # Control para JetBot
 ├── launch/
-│ ├── sprint1.launch.py
-│ ├── drawer_number_gazebo.launch.py
-│ └── turtlebot3_empty_world.launch.py
+│ ├── sprint2_complete.launch.py # Lanzamiento completo
+│ ├── sprint2_obstacle_avoidance.launch.py # Esquiva de obstáculos
+│ └── sprint2_draw_number_jetbot.launch.py # Dibujo con JetBot
 ├── package.xml
 ├── setup.py
 └── setup.cfg
 ```
-
 ---
 
-## <u>Prerequisitos</u>
-### Instalación de Dependencias
+## <u>Requisitos</u>
 
+- **Ubuntu 22.04** (ROS 2 Humble)
+- **ROS 2 Humble Fitzroy**
+- **Python 3.10+**
+- **Gazebo Garden** (o versión compatible)
+
+### Instalación de dependencias:
+
+```bash
 # Actualizar sistema
-```bash
-sudo apt update
-```
+sudo apt update && sudo apt upgrade -y
 
-# Instalar TurtleBot3 para ROS2 Foxy
-```bash
-sudo apt install ros-foxy-turtlebot3*
-sudo apt install ros-foxy-turtlebot3-gazebo
-sudo apt install ros-foxy-turtlebot3-simulations
-```
+# Instalar TurtleBot3 para ROS 2 Humble
+sudo apt install ros-humble-turtlebot3*
+sudo apt install ros-humble-turtlebot3-gazebo
+sudo apt install ros-humble-turtlebot3-simulations
 
 # Instalar Gazebo
-```bash
-sudo apt install gazebo11 libgazebo11-dev
-```
+sudo apt install gazebo-garden libgazebo-garden-dev
 
 # Dependencias adicionales de ROS
-```bash
-sudo apt install ros-foxy-gazebo-ros-pkgs
-sudo apt install ros-foxy-ros2-control
-sudo apt install ros-foxy-ros2-controllers
+sudo apt install ros-humble-gazebo-ros-pkgs
+sudo apt install ros-humble-ros2-control
+sudo apt install ros-humble-ros2-controllers
 ```
----
 
-## <u>Ejecución</u>
-
-1. **Cargar el workspace**
+###<u>Ejecución</u>
+**1. Compilación del workspace**
 ```bash
 cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws
-colcon build
+colcon build --packages-select g11_prii3
 source install/setup.bash
-```
-2. **Mundos de Simulación Disponibles**
-- **Mundo Vacío**
-```bash
-export TURTLEBOT3_MODEL=burger
-ros2 launch turtlebot3_gazebo empty_world.launch.py
-```
-    
-- **Mundo TurtleBot3**
-```bash
-export TURTLEBOT3_MODEL=waffle
-ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py
 ```
 
-- **Casa TurtleBot3**
+**2. Lanzamiento de simulaciones**
+Dibujo básico del número "11":
 ```bash
-export TURTLEBOT3_MODEL=waffle_pi
-ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
+ros2 launch g11_prii3 sprint2_complete.launch.py
 ```
 
-3. **Métodos de Control**
-- **Teleoperación con Teclado (Recomendado)**
+Evitación de obstáculos con spawneo dinámico
 ```bash
-source install/setup.bash
-ros2 run g11_prii3 turtlebot3_teleop_keyboard
-```
-Controles:
-
-    	W: Mover hacia adelante
-	S: Mover hacia atrás
-    	A: Girar izquierda
-	D: Girar derecha
-    	Espacio: Detener
-    	Q: Aumentar velocidad
-    	E: Disminuir velocidad
-    	Ctrl+C: Salir
-
-- **Movimiento Automático**
-```bash
-source install/setup.bash
-ros2 run g11_prii3 g11_prii3_move_turtlebot
-```
-Dibujar número:
-```bash
-cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws/src/g11_prii3_move_turtlebot
-python3 draw_number_simulation.py
-```
-Pausar, reanudar y reiniciar dibujo (abrir otro terminal):
-```bash
-ros2 service call /stop_drawing std_srvs/srv/Empty     # Pausa el dibujo
-ros2 service call /resume_drawing std_srvs/srv/Empty   # Reanuda el dibujo
-ros2 service call /reset_drawing std_srvs/srv/Empty    # Reinicia el dibujo desde el paso 0
+ros2 launch g11_prii3 sprint2_obstacle_avoidance.launch.py
 ```
 
-- **Script de Pruebas**
+Esquivación de obstáculos con spawneo dinámico
 ```bash
-source install/setup.bash
-ros2 run g11_prii3 test_turtlebot3
+ros2 launch g11_prii3 sprint2_obstacle_avoidance.launch.py
 ```
-- **Evitación de Obstáculos**
 
-1- Cargamos el workspace:
+Dibujo con JetBot
 ```bash
-cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws
-colcon build
-source install/setup.bash
+ros2 launch g11_prii3 sprint2_draw_number_jetbot.launch.py
 ```
-2- Lanzamos el mundo vacío:
-```bash
-export TURTLEBOT3_MODEL=burger
-ros2 launch turtlebot3_gazebo empty_world.launch.py
-```
-3- Abrimos otro terminal y ejecutamos lo siguiente:
-```bash
-cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws/src/g11_prii3_move_turtlebot
-colcon build
-source install/setup.bash
-python3 obstacle_spawner.py
-```
-4- Abrimos otro terminal y ejecutamos lo siguiente:
-```bash
-colcon build
-source install/setup.bash
-python3 obstacle_avoidance_simulation.py
-```
+
 ---
 
-## <u>Control de versión</u>
+###<u>Características técnicas</u>
 
-Repositorio GitHub:
-[https://github.com/jgomper/g11_prii3_ws](https://github.com/jgomper/g11_prii3_ws)
+**Algoritmos implementados:**
+- Control PID para giros precisos
+- Detección LIDAR para evitación de colisiones
+- Maniobras de esquiva con giros de 45° y 90°
+- Spawneo dinámico de obstáculos en tiempo de ejecución
+- Control no bloqueante para ejecución fluida
 
+**Servicios ROS disponibles:**
+- Parada/reanudación del dibujo
+- Reinicio de trayectorias
+- Spawneo/eliminación de obstáculos
 
-## <u>Control de versión</u>
+###<u>Control de versión</u>
 
-Repositorio GitHub:  
-[https://github.com/jgomper/g11_prii3_ws](https://github.com/jgomper/g11_prii3_ws)
+**Repositorio GitHub:**
+https://github.com/jgomper/g11_prii3_ws
 
-
-
-
-
-
-
-
+**Rama principal:** main
+**Estructura:** Paquetes separados para TurtleBot3 (simulación) y JetBot (robot real)
 
 
 
