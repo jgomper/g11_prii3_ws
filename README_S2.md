@@ -135,13 +135,17 @@ source install/setup.bash
 export TURTLEBOT3_MODEL=burger
 ros2 launch turtlebot3_gazebo empty_world.launch.py
 ```
-3- Abrimos otro terminal, cargamos el workspace y ejecutamos lo siguiente:
+3- Abrimos otro terminal y ejecutamos lo siguiente:
 ```bash
 cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws/src/g11_prii3_move_turtlebot
+colcon build
+source install/setup.bash
 python3 obstacle_spawner.py
 ```
-4- Abrimos otro terminal, volvemos a cargar el workspace y ejecutamos lo siguiente:
+4- Abrimos otro terminal y ejecutamos lo siguiente:
 ```bash
+colcon build
+source install/setup.bash
 python3 obstacle_avoidance_simulation.py
 ```
 ---
