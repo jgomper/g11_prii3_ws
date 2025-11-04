@@ -122,7 +122,27 @@ ros2 service call /reset_drawing std_srvs/srv/Empty    # Reinicia el dibujo desd
 source install/setup.bash
 ros2 run g11_prii3 test_turtlebot3
 ```
-
+- **Evitación de Obstáculos**
+1- Cargamos el workspace:
+```bash
+cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws
+colcon build
+source install/setup.bash
+```
+2- Lanzamos el mundo vacío:
+```bash
+export TURTLEBOT3_MODEL=burger
+ros2 launch turtlebot3_gazebo empty_world.launch.py
+```
+3- Abrimos otro terminal, cargamos el workspace y ejecutamos lo siguiente:
+```bash
+cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws/src/g11_prii3_move_turtlebot
+python3 obstacle_spawner.py
+```
+4- Abrimos otro terminal, volvemos a cargar el workspace y ejecutamos lo siguiente:
+```bash
+python3 obstacle_avoidance_simulation.py
+```
 ---
 
 ## <u>Control de versión</u>
