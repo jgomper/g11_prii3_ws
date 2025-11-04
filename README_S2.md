@@ -105,12 +105,6 @@ Controles:
 source install/setup.bash
 ros2 run g11_prii3 g11_prii3_move_turtlebot
 ```
-
-- **Script de Pruebas**
-```bash
-source install/setup.bash
-ros2 run g11_prii3 test_turtlebot3
-```
 Dibujar número:
 ```bash
 cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws/src/g11_prii3_move_turtlebot
@@ -122,6 +116,13 @@ ros2 service call /stop_drawing std_srvs/srv/Empty     # Pausa el dibujo
 ros2 service call /resume_drawing std_srvs/srv/Empty   # Reanuda el dibujo
 ros2 service call /reset_drawing std_srvs/srv/Empty    # Reinicia el dibujo desde el paso 0
 ```
+
+- **Script de Pruebas**
+```bash
+source install/setup.bash
+ros2 run g11_prii3 test_turtlebot3
+```
+
 ---
 
 ## <u>Control de versión</u>
