@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
 from glob import glob
 
@@ -7,8 +7,8 @@ package_name = 'g11_prii3'
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[package_name],
-    package_dir={'': 'src'},  # ¡ESTA LÍNEA ES CLAVE!
+    packages=find_packages(where='src'),
+    package_dir={'': 'src'},
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -25,18 +25,26 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            # Nodos en g11_prii3
             'prii3_turtlesim_node = g11_prii3.prii3_turtlesim_node:main',
-            'drawer_number_gazebo = g11_prii3.drawer_number_gazebo:main',
-            'g11_prii3_move_jetbot = g11_prii3.g11_prii3_move_jetbot:main',
-            'g11_prii3_move_turtlebot = g11_prii3.g11_prii3_move_turtlebot:main',
-            'turtlebot3_teleop_keyboard = g11_prii3.turtlebot3_teleop_keyboard:main',
-            'test_turtlebot3 = g11_prii3.test_turtlebot3:main',
             'laser_filter = g11_prii3.laser_filter:main',
-            'draw_number_simulation = g11_prii3.draw_number_simulation:main',
-            'collision_avoidance_simulation = g11_prii3.collision_avoidance_simulation:main',
-            'obstacle_avoidance_simulation = g11_prii3.obstacle_avoidance_simulation:main',
-            'obstacle_spawner = g11_prii3.obstacle_spawner:main',
-            'trajectory_controller = g11_prii3.trajectory_controller:main',
+            'sprint2_demo = g11_prii3.sprint2_demo:main',
+            
+            
+            # Nodos en g11_prii3_move_turtlebot
+            'collision_avoidance_simulation = g11_prii3_move_turtlebot.collision_avoidance_simulation:main',
+            'obstacle_avoidance_simulation = g11_prii3_move_turtlebot.obstacle_avoidance_simulation:main',
+            'trajectory_controller = g11_prii3_move_turtlebot.trajectory_controller:main',
+            'obstacle_spawner = g11_prii3_move_turtlebot.obstacle_spawner:main',
+            'draw_number_simulation = g11_prii3_move_turtlebot.draw_number_simulation:main',
+            'draw_collision_avoidance = g11_prii3_move_turtlebot.draw_collision_avoidance:main',
+            'draw_obstacle_avoidance = g11_prii3_move_turtlebot.draw_obstacle_avoidance:main',
+            'test_turtlebot3 = g11_prii3_move_turtlebot.test_turtlebot3:main',
+            'turtlebot3_teleop_keyboard = g11_prii3_move_turtlebot.turtlebot3_teleop_keyboard:main',
+            'g11_prii3_move_turtlebot = g11_prii3_move_turtlebot.g11_prii3_move_turtlebot:main',
+            
+            # Nodos en g11_prii3_move_jetbot
+            'draw_number_jetbot = g11_prii3.draw_number_jetbot:main',
         ],
     },
 )
