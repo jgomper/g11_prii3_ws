@@ -123,6 +123,7 @@ source install/setup.bash
 ros2 run g11_prii3 test_turtlebot3
 ```
 - **Evitación de Obstáculos**
+
 1- Cargamos el workspace:
 ```bash
 cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws
