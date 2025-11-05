@@ -26,8 +26,7 @@ g11_prii3_ws/
 │ ├── g11_prii3/
 │ │ ├── prii3_turtlesim_node.py # Nodo para turtlesim (Sprint 1)
 │ │ ├── laser_filter.py # Filtro LIDAR
-│ │ ├── sprint2_demo.py # Demo Sprint 2
-│ │ └── draw_number_jetbot.py # Dibujo para JetBot
+│ │ └── sprint2_demo.py # Demo Sprint 2
 │ ├── g11_prii3_move_turtlebot/
 │ │ ├── draw_number_simulation.py # Dibujo básico del "11"
 │ │ ├── draw_collision_avoidance.py # Dibujo con detección de colisiones
@@ -40,7 +39,7 @@ g11_prii3_ws/
 │ │ ├── turtlebot3_teleop_keyboard.py # Teleoperación con teclado
 │ │ └── g11_prii3_move_turtlebot.py # Movimiento automático
 │ └── g11_prii3_move_jetbot/
-│ └── g11_prii3_move_jetbot.py # Control para JetBot
+│ └── draw_number_jetbot.py # Dibujo para JetBot
 ├── launch/
 │ ├── sprint2_complete.launch.py # Lanzamiento completo
 │ ├── sprint2_obstacle_avoidance.launch.py # Esquiva de obstáculos
@@ -128,7 +127,7 @@ ros2 launch g11_prii3 sprint2_draw_number_jetbot.launch.py
 **Repositorio GitHub:**
 https://github.com/jgomper/g11_prii3_ws
 
-**Rama principal:** main
+**Rama principal:** main  
 **Estructura:** Paquetes separados para TurtleBot3 (simulación) y JetBot (robot real)
 
 
