@@ -52,9 +52,9 @@ g11_prii3_ws/
 
 ## <u>Requisitos</u>
 
-- **Ubuntu 22.04** (ROS 2 Humble)
-- **ROS 2 Humble Fitzroy**
-- **Python 3.10+**
+- **Ubuntu 20.04** (ROS 2 Humble)
+- **ROS 2 Foxy** (o superior compatible)
+- **Python 3.8+**
 - **Gazebo Garden** (o versión compatible)
 
 ### Instalación de dependencias:
