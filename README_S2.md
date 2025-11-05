@@ -78,7 +78,7 @@ sudo apt install ros-humble-ros2-control
 sudo apt install ros-humble-ros2-controllers
 ```
 
-###<u>Ejecución</u>
+## <u>Ejecución</u>
 **1. Compilación del workspace**
 ```bash
 cd ~/Escritorio/UPV/proyecto_3/g11_prii3_ws
@@ -87,29 +87,29 @@ source install/setup.bash
 ```
 
 **2. Lanzamiento de simulaciones**
-Dibujo básico del número "11":
+- Dibujo básico del número "11":
 ```bash
 ros2 launch g11_prii3 sprint2_complete.launch.py
 ```
 
-Evitación de obstáculos con spawneo dinámico
+- Evitación de obstáculos con spawneo dinámico
 ```bash
 ros2 launch g11_prii3 sprint2_obstacle_avoidance.launch.py
 ```
 
-Esquivación de obstáculos con spawneo dinámico
+- Esquivación de obstáculos con spawneo dinámico
 ```bash
 ros2 launch g11_prii3 sprint2_obstacle_avoidance.launch.py
 ```
 
-Dibujo con JetBot
+- Dibujo básico del número "11" con JetBot
 ```bash
 ros2 launch g11_prii3 sprint2_draw_number_jetbot.launch.py
 ```
 
 ---
 
-###<u>Características técnicas</u>
+## <u>Características técnicas</u>
 
 **Algoritmos implementados:**
 - Control PID para giros precisos
@@ -123,7 +123,7 @@ ros2 launch g11_prii3 sprint2_draw_number_jetbot.launch.py
 - Reinicio de trayectorias
 - Spawneo/eliminación de obstáculos
 
-###<u>Control de versión</u>
+## <u>Control de versión</u>
 
 **Repositorio GitHub:**
 https://github.com/jgomper/g11_prii3_ws
