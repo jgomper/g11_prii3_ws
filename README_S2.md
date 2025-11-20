@@ -93,7 +93,7 @@ ros2 launch g11_prii3 sprint2_complete.launch.py
 
 - Evitación de obstáculos con spawneo dinámico
 ```bash
-ros2 launch g11_prii3 sprint2_obstacle_avoidance.launch.py
+ros2 launch g11_prii3 sprint2_collision_avoidance.launch.py
 ```
 
 - Esquivación de obstáculos con spawneo dinámico
