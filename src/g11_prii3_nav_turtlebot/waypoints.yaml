@@ -1,0 +1,19 @@
+waypoints:
+  start:
+    position: [0.0, 0.0, 0.0]      # Punto inicial
+    wait_time: 3.0
+  advance_1m:
+    position: [1.0, 0.0, 0.0]      # Avanza 1 metro
+    wait_time: 2.0
+  advance_2m:
+    position: [2.0, 0.0, 0.0]      # Avanza 2 metros
+    wait_time: 2.0
+  advance_3m:
+    position: [3.0, 0.0, 0.0]      # Avanza 3 metros
+    wait_time: 2.0
+  #advance_4m:
+  #  position: [4.0, 0.0, 0.0]      # Avanza 4 metros (objetivo final)
+  #  wait_time: 5.0
+  #return_home:
+  #  position: [0.0, 0.0, 0.0]      # Vuelve al inicio
+  #  wait_time: 5.0

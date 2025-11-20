@@ -7,14 +7,14 @@ package_name = 'g11_prii3'
 setup(
     name=package_name,
     version='0.0.0',
-    packages=find_packages(where='src'),
-    package_dir={'': 'src'},
+    packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'launch'), 
-         glob('launch/*.launch.py')),
+        # AÑADIR ESTAS LÍNEAS PARA WORLDS Y LAUNCH:
+        (os.path.join('share', package_name, 'worlds'), glob('worlds/*.world')),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -30,7 +30,6 @@ setup(
             'laser_filter = g11_prii3.laser_filter:main',
             'sprint2_demo = g11_prii3.sprint2_demo:main',
             
-            
             # Nodos en g11_prii3_move_turtlebot
             'collision_avoidance_simulation = g11_prii3_move_turtlebot.collision_avoidance_simulation:main',
             'obstacle_avoidance_simulation = g11_prii3_move_turtlebot.obstacle_avoidance_simulation:main',
@@ -44,7 +43,10 @@ setup(
             'g11_prii3_move_turtlebot = g11_prii3_move_turtlebot.g11_prii3_move_turtlebot:main',
             
             # Nodos en g11_prii3_move_jetbot
-            'draw_number_jetbot = g11_prii3.draw_number_jetbot:main',
+            'draw_number_jetbot = g11_prii3_move_jetbot.draw_number_jetbot:main',
+
+            # Nodos en g11_prii3_nav_turtlebot
+            'waypoint_navigator = g11_prii3_nav_turtlebot.waypoint_navigator:main',
         ],
     },
 )
