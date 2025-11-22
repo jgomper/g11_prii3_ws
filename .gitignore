@@ -2,3 +2,32 @@ build/
 install/
 log/
 
+
+# ROS2 build and log directories
+build/
+install/
+log/
+
+# Enlaces simbólicos
+latest_build
+
+# Gazebo
+.gazebo/
+~/.gazebo/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# System
+.DS_Store
+Thumbs.db
+
+# Backup files
+*~
+*.bak
+log/
+src/g11_prii3_nav_jetbot/rosbag2_*/
+*.db3
+*.db3-*
