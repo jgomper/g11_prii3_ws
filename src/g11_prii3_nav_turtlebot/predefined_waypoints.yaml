@@ -1,0 +1,39 @@
+# predefined_waypoints.yaml
+# Waypoints predefinidos para el laboratorio F1L3
+# PBI 3.3 - Sprint 3
+
+predefined_waypoints:
+  punto_inicial:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+    description: "Posicion inicial del robot"
+    
+  pasillo_central:
+    x: 2.5
+    y: 0.0
+    z: 0.0
+    w: 1.0
+    description: "Centro del pasillo principal"
+    
+  puerta_laboratorio:
+    x: 4.8
+    y: 1.2
+    z: 0.707
+    w: 0.707
+    description: "Frente a la puerta del laboratorio"
+    
+  interior_laboratorio:
+    x: 5.5
+    y: 3.0
+    z: 0.0
+    w: 1.0
+    description: "Interior del laboratorio"
+    
+  mesa_trabajo:
+    x: 3.2
+    y: 4.5
+    z: 0.382
+    w: 0.924
+    description: "Frente a mesa de trabajo principal"
