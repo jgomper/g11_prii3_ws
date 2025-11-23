@@ -47,7 +47,10 @@ setup(
 
             # Nodos en g11_prii3_nav_turtlebot
             'waypoint_navigator = g11_prii3_nav_turtlebot.waypoint_navigator:main',
+<<<<<<< HEAD
             'predefined_navigation = g11_prii3_nav_turtlebot.predefined_navigation:main',
+=======
+>>>>>>> 911b04cb1dc4cb346cb07729bf5949e1c452a592
         ],
     },
 )

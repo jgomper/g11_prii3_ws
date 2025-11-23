@@ -31,3 +31,4 @@ log/
 src/g11_prii3_nav_jetbot/rosbag2_*/
 *.db3
 *.db3-*
+log/
