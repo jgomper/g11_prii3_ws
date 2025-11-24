@@ -27,8 +27,11 @@ setup(
         ('share/' + package_name, ['package.xml']),
         # AÑADIR ESTAS LÍNEAS PARA WORLDS Y LAUNCH:
         (os.path.join('share', package_name, 'worlds'), glob('worlds/*.world')),
-        (os.path.join('share', package_name, 'worlds'), glob('worlds/**/*')),
+        #(os.path.join('share', package_name, 'worlds'), glob('worlds/**/*')),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
+        # AGREGAR ARCHIVOS YAML PARA NAVEGACIÓN
+        (os.path.join('share', package_name, 'g11_prii3_nav_turtlebot'), 
+         glob('src/g11_prii3_nav_turtlebot/*.yaml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

@@ -17,6 +17,13 @@
   <depend>nav_msgs</depend>
   <depend>turtlebot3_gazebo</depend>
   <depend>gazebo_ros</depend>
+  
+  <!-- DEPENDENCIAS NAV2 PARA PBI 3.3 -->
+  <depend>nav2_simple_commander</depend>
+  <depend>nav2_bringup</depend>
+  <depend>nav2_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>python3-yaml</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

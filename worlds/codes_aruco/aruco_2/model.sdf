@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="aruco_2">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.3 0.3</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://codes_aruco/aruco_2/materials/scripts</uri>
+            <name>ArUco2/Material</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
