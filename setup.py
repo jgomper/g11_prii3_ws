@@ -7,13 +7,27 @@ package_name = 'g11_prii3'
 setup(
     name=package_name,
     version='0.0.0',
-    packages=find_packages(exclude=['test']),
+    packages=[
+        'g11_prii3',
+        'g11_prii3_move_turtlebot', 
+        'g11_prii3_move_jetbot',
+        'g11_prii3_nav_turtlebot',
+        'g11_prii3_nav_jetbot'
+    ],
+    package_dir={
+        'g11_prii3': 'src/g11_prii3',
+        'g11_prii3_move_turtlebot': 'src/g11_prii3_move_turtlebot',
+        'g11_prii3_move_jetbot': 'src/g11_prii3_move_jetbot', 
+        'g11_prii3_nav_turtlebot': 'src/g11_prii3_nav_turtlebot',
+        'g11_prii3_nav_jetbot': 'src/g11_prii3_nav_jetbot'
+    },
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         # AÑADIR ESTAS LÍNEAS PARA WORLDS Y LAUNCH:
         (os.path.join('share', package_name, 'worlds'), glob('worlds/*.world')),
+        (os.path.join('share', package_name, 'worlds'), glob('worlds/**/*')),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
     ],
     install_requires=['setuptools'],
@@ -47,10 +61,11 @@ setup(
 
             # Nodos en g11_prii3_nav_turtlebot
             'waypoint_navigator = g11_prii3_nav_turtlebot.waypoint_navigator:main',
-<<<<<<< HEAD
             'predefined_navigation = g11_prii3_nav_turtlebot.predefined_navigation:main',
-=======
->>>>>>> 911b04cb1dc4cb346cb07729bf5949e1c452a592
+
+            # Nodos en g11_prii3_nav_jetbot
+            'aruco_detector = g11_prii3_nav_jetbot.aruco_detector:main',
+            'aruco_bag_processor = g11_prii3_nav_jetbot.aruco_bag_processor:main',
         ],
     },
 )
