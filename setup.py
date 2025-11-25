@@ -65,6 +65,8 @@ setup(
             # Nodos en g11_prii3_nav_turtlebot
             'waypoint_navigator = g11_prii3_nav_turtlebot.waypoint_navigator:main',
             'predefined_navigation = g11_prii3_nav_turtlebot.predefined_navigation:main',
+            'autonomous_navigation = g11_prii3_nav_turtlebot.autonomous_navigation:main',
+            'aruco_detector_autonomous = g11_prii3_nav_turtlebot.aruco_detector_autonomous:main',
 
             # Nodos en g11_prii3_nav_jetbot
             'aruco_detector = g11_prii3_nav_jetbot.aruco_detector:main',
