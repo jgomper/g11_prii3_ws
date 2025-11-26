@@ -1,35 +1,26 @@
 #!/usr/bin/env python3
 """
 autonomous_navigation_demo.launch.py
-Launch file para navegación autónoma con detección de ArUcos - Apartado 3.4
+Launch file para navegación autónoma mejorada con Nav2
 """
 import os
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, TimerAction, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, FindExecutable
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     
-    # Argumentos para configurar velocidades
+    # Establecer variable de entorno
+    os.environ['TURTLEBOT3_MODEL'] = 'waffle'
+    
+    # Argumentos
     aruco_id_arg = DeclareLaunchArgument(
         'target_aruco_id',
-        default_value='0',
-        description='ID del ArUco objetivo (0, 1, o 2)'
-    )
-    
-    linear_speed_arg = DeclareLaunchArgument(
-        'linear_speed',
-        default_value='0.5',
-        description='Velocidad lineal del robot (m/s)'
-    )
-    
-    angular_speed_arg = DeclareLaunchArgument(
-        'angular_speed', 
-        default_value='0.8',
-        description='Velocidad angular del robot (rad/s)'
+        default_value='5',
+        description='ID del ArUco objetivo esperado (5, 6, o 17)'
     )
     
     # 1. Mundo F1L3 en Gazebo
@@ -40,17 +31,23 @@ def generate_launch_description():
         ])
     )
     
-    # 2. Detector de ArUcos (inicia inmediatamente)
-    aruco_detector_node = Node(
-        package='g11_prii3',
-        executable='aruco_detector_autonomous',
-        name='aruco_detector_autonomous',
-        output='screen'
+    # 2. Nav2 Bringup - ¡ESTO ES LO QUE FALTABA!
+    nav2_bringup_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            get_package_share_directory('nav2_bringup'),
+            '/launch/bringup_launch.py'
+        ]),
+        launch_arguments={
+            'map': os.path.join(get_package_share_directory('g11_prii3'), 'worlds', 'mapa_f1l3.yaml'),
+            'params_file': os.path.join(get_package_share_directory('g11_prii3'), 'g11_prii3_nav_turtlebot', 'nav2_params.yaml'),
+            'use_sim_time': 'True',
+            'autostart': 'True'
+        }.items()
     )
     
-    # 3. Navegación autónoma (con delay para que todo se inicialice)
+    # 3. Navegación autónoma mejorada (con delay para que Nav2 se inicialice)
     autonomous_nav_node = TimerAction(
-        period=6.0,  # Reducido de 8.0 a 6.0 segundos
+        period=10.0,  # Esperar 10 segundos para que Nav2 esté listo
         actions=[
             Node(
                 package='g11_prii3',
@@ -58,9 +55,7 @@ def generate_launch_description():
                 name='autonomous_navigation',
                 output='screen',
                 parameters=[{
-                    'target_aruco_id': LaunchConfiguration('target_aruco_id'),
-                    'linear_speed': LaunchConfiguration('linear_speed'),
-                    'angular_speed': LaunchConfiguration('angular_speed')
+                    'use_sim_time': True
                 }]
             )
         ]
@@ -68,9 +63,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         aruco_id_arg,
-        linear_speed_arg,
-        angular_speed_arg,
         world_launch,
-        aruco_detector_node,
+        nav2_bringup_launch,
         autonomous_nav_node
     ])
